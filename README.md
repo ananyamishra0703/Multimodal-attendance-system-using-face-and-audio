@@ -1,7 +1,7 @@
 # Multimodal Attendance System (Face + Voice)
 
 **Developed by:** Ananya Mishra (24BAI1558)
-**Course:** BCSE301P – Software Engineering Lab, VIT Chennai
+**Course:** BCSE301P – Software Engineering Lab, VIT Chennai<br>
 **Faculty:** Dr. Elakya R
 
 A desktop application that marks student attendance by recognizing both
@@ -145,10 +145,6 @@ Multimodal-attendance-system-using-face-and-audio/
 │   ├── attendance.py           # Live attendance session + fusion logic
 │   └── resources/
 │       └── haarcascade_frontalface_default.xml
-├── testing/
-│   ├── ananya_test.py          # Selenium WebDriver functional tests
-│   └── AttendanceLoadTest.jmx  # Apache JMeter load test plan
-├── diagrams/                   # StarUML models (ER, DFD, UML diagrams)
 └── data/                       # created automatically on first run
     ├── attendance.db
     ├── faces/<student_id>/     # enrolled face photos
@@ -201,24 +197,9 @@ system:
 - Correctly rejects random noise rather than misidentifying it as an
   enrolled student.
 
-**Testing tools** (files in the `testing/` folder):
-
-| Tool | Type | File |
-|---|---|---|
-| Selenium WebDriver (Python) | Functional / black-box UI testing | `testing/ananya_test.py` |
-| Apache JMeter 5.6.3 | Performance / load testing | `testing/AttendanceLoadTest.jmx` |
-
-To run the Selenium tests:
-```bash
-pip install selenium
-python3 testing/ananya_test.py
-```
-
-To run the JMeter load test, open `AttendanceLoadTest.jmx` in Apache
-JMeter and click **Start**, or run it from the command line:
-```bash
-jmeter -n -t testing/AttendanceLoadTest.jmx -l results.jtl
-```
+Functional testing (Selenium WebDriver), performance testing (Apache
+JMeter), and the UML/ER/DFD design models (StarUML) are documented in the
+accompanying project report.
 
 ## Limitations and future enhancements
 
