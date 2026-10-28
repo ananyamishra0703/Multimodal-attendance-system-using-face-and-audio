@@ -1,6 +1,6 @@
 # Multimodal Attendance System (Face + Voice)
 
-**Developed by:** Ananya Mishra (24BAI1558)
+**Developed by:** Ananya Mishra (24BAI1558)<br>
 **Course:** BCSE301P – Software Engineering Lab, VIT Chennai<br>
 **Faculty:** Dr. Elakya R
 
@@ -57,6 +57,8 @@ or either modality failing to confidently recognize anyone, is logged as
 | Audio I/O | sounddevice + soundfile |
 | Storage | SQLite (Python's built-in `sqlite3` module) |
 | Interface | Command-line menu + live OpenCV camera window |
+| Web dashboard | Flask (runs on `http://localhost:5000`) |
+| Testing | Selenium WebDriver (functional), Apache JMeter (load) |
 
 Every dependency installs from a prebuilt wheel — there is no C++
 compiler, CMake, or native build step involved anywhere in this project.
@@ -72,10 +74,17 @@ cd Multimodal-attendance-system-using-face-and-audio
 python3 -m venv venv
 source venv/bin/activate          # on Windows: venv\Scripts\activate
 
-# install dependencies and run
+# install dependencies
 pip install -r requirements.txt
-python3 app/main.py
 ```
+
+The system has two versions that share the same database (`app/db.py`),
+so anything done in one appears in the other:
+
+| Version | Command | Opens |
+|---|---|---|
+| Terminal / camera | `python3 app/main.py` | Terminal menu + webcam window |
+| Web dashboard | `python3 app/web_app.py` | Browser at `http://localhost:5000` |
 
 The first run creates a `data/` folder (SQLite database, enrolled face
 photos, voice recordings, trained model files) and an `exports/` folder
@@ -137,7 +146,8 @@ Multimodal-attendance-system-using-face-and-audio/
 ├── README.md
 ├── requirements.txt
 ├── app/
-│   ├── main.py                 # CLI menu / entry point
+│   ├── main.py                 # CLI menu / entry point (terminal version)
+│   ├── web_app.py              # Flask web dashboard (localhost version)
 │   ├── db.py                   # SQLite: students & attendance records
 │   ├── face_recognition.py     # Haar Cascade detection + LBPH recognition
 │   ├── voice_recognition.py    # MFCC extraction + GMM speaker models
@@ -145,6 +155,9 @@ Multimodal-attendance-system-using-face-and-audio/
 │   ├── attendance.py           # Live attendance session + fusion logic
 │   └── resources/
 │       └── haarcascade_frontalface_default.xml
+├── tests/
+│   ├── test_selenium.py        # Selenium functional tests (web dashboard)
+│   └── jmeter_load_test.jmx    # JMeter load test plan
 └── data/                       # created automatically on first run
     ├── attendance.db
     ├── faces/<student_id>/     # enrolled face photos
@@ -197,14 +210,24 @@ system:
 - Correctly rejects random noise rather than misidentifying it as an
   enrolled student.
 
-Functional testing (Selenium WebDriver), performance testing (Apache
-JMeter), and the UML/ER/DFD design models (StarUML) are documented in the
-accompanying project report.
+**Web dashboard tests** (files in `tests/`). Start the web dashboard
+first with `python3 app/web_app.py`, then in a second terminal:
+
+```bash
+# Selenium functional tests
+python3 tests/test_selenium.py
+
+# JMeter load test (or open the .jmx in JMeter and click Start)
+jmeter -n -t tests/jmeter_load_test.jmx -l results.jtl
+```
+
+Test results, screenshots, and the UML/ER/DFD design models (StarUML)
+are documented in the accompanying project report.
 
 ## Limitations and future enhancements
 
 Current scope: single enrolled class at a time (no multi-class/section
-support), desktop CLI + OpenCV window rather than a web interface, no
+support), a basic localhost web dashboard rather than a hosted deployment, no
 anti-spoofing (a photo held up to the camera could fool face detection —
 a known limitation of camera-based face recognition generally), and
 recognition accuracy depends on reasonable lighting and a quiet room for
@@ -212,7 +235,7 @@ voice capture.
 
 Planned enhancements:
 - **Liveness detection** (e.g., blink detection) to prevent photo spoofing
-- **Web/kiosk interface** with role-based access for faculty and admins
+- **Hosted web/kiosk deployment** with role-based access for faculty and admins
 - **Deep-learning embeddings** (FaceNet-style face and speaker embeddings)
   for higher accuracy
 - **Multi-class support** and a **PostgreSQL** backend
