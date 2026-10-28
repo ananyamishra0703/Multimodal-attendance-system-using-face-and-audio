@@ -65,8 +65,8 @@ compiler, CMake, or native build step involved anywhere in this project.
 
 ```bash
 # clone the repository
-git clone https://github.com/ananyamishra0703/multimodal-attendance-system.git
-cd multimodal-attendance-system
+git clone https://github.com/ananyamishra0703/Multimodal-attendance-system-using-face-and-audio.git
+cd Multimodal-attendance-system-using-face-and-audio
 
 # set up a virtual environment
 python3 -m venv venv
@@ -133,7 +133,7 @@ or list everyone currently enrolled.
 ## Project structure
 
 ```
-multimodal-attendance-system/
+Multimodal-attendance-system-using-face-and-audio/
 ├── README.md
 ├── requirements.txt
 ├── app/
